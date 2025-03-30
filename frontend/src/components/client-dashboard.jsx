@@ -18,6 +18,13 @@ export default function HakikaDashboard() {
     setBatchNumber("");
   };
 
+//   CSV UPLOAD FEATURE
+  const handleCSVUpload = (event) => {
+    const file = event.target.files[0];
+    setCsvFile(file);
+    // Process CSV file (Placeholder for backend integration)
+  };
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Hakika Client Dashboard</h1>
