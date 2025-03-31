@@ -1,10 +1,10 @@
-import HakikaDashboard from "./components/HakikaClientDashboard" 
+import HakikaClientDashboard from "./components/HakikaClientDashboard" 
 
 function App() {
 
   return (
     <>
-      <HakikaDashboard />
+      <HakikaClientDashboard />
     </>
   )
 }
