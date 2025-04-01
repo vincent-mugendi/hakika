@@ -28,8 +28,17 @@ export default function HakikaClientDashboard() {
 
   const generateQR = () => {
     if (!productName || !batchNumber) return;
+
     const qrData = `${productName}-${batchNumber}-${Date.now()}`;
-    setProducts([...products, { name: productName, batch: batchNumber, qrData }]);
+    const qrURL = `https://vincentmugendi.com/verify?qr=${encodeURIComponent(qrData)}`;
+
+    const newProduct = { name: productName, batch: batchNumber, qrData, qrURL };
+
+    setProducts([...products, newProduct]);
+
+    // Store in localStorage (Replace with API if using backend)
+    localStorage.setItem("hakikaProducts", JSON.stringify([...products, newProduct]));
+
     setProductName("");
     setBatchNumber("");
   };
@@ -42,10 +51,7 @@ export default function HakikaClientDashboard() {
   return (
     <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", minWidth: "100vw" }}>
       {/* Navigation Bar */}
-      <AppBar
-        position="static"
-        sx={{ background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(10px)", boxShadow: "none" }}
-      >
+      <AppBar position="static" sx={{ background: "rgba(255, 255, 255, 0.8)", backdropFilter: "blur(10px)", boxShadow: "none" }}>
         <Toolbar>
           <IconButton edge="start" color="default" aria-label="menu">
             <MenuIcon />
@@ -67,22 +73,8 @@ export default function HakikaClientDashboard() {
           <Typography variant="h6" gutterBottom>
             Register Product
           </Typography>
-          <TextField
-            label="Product Name"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-          />
-          <TextField
-            label="Batch Number"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            value={batchNumber}
-            onChange={(e) => setBatchNumber(e.target.value)}
-          />
+          <TextField label="Product Name" fullWidth margin="normal" variant="outlined" value={productName} onChange={(e) => setProductName(e.target.value)} />
+          <TextField label="Batch Number" fullWidth margin="normal" variant="outlined" value={batchNumber} onChange={(e) => setBatchNumber(e.target.value)} />
           <Button variant="contained" sx={{ mt: 2, borderRadius: 2 }} onClick={generateQR} fullWidth>
             Generate QR Code
           </Button>
@@ -91,7 +83,7 @@ export default function HakikaClientDashboard() {
         {/* CSV Upload */}
         <Paper elevation={3} sx={{ p: 3, borderRadius: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom>
-            Bulk QR Code Upload
+            Bulk Product Upload
           </Typography>
           <input type="file" accept=".csv" onChange={handleCSVUpload} />
           {csvFile && <Typography variant="body2" sx={{ mt: 1 }}>File uploaded: {csvFile.name}</Typography>}
@@ -119,7 +111,8 @@ export default function HakikaClientDashboard() {
                       <TableCell>{product.name}</TableCell>
                       <TableCell>{product.batch}</TableCell>
                       <TableCell>
-                        <QRCodeCanvas value={product.qrData} size={50} />
+                        {/* QR Code without a clickable link */}
+                        <QRCodeCanvas value={product.qrURL} size={50} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -134,4 +127,3 @@ export default function HakikaClientDashboard() {
 }
 
 export { HakikaClientDashboard };
-
