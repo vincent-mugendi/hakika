@@ -30,7 +30,7 @@ export default function HakikaClientDashboard() {
     if (!productName || !batchNumber) return;
 
     const qrData = `${productName}-${batchNumber}-${Date.now()}`;
-    const qrURL = `https://vincentmugendi.com/verify?qr=${encodeURIComponent(qrData)}`;
+    const qrURL = `https://hakika-self.vercel.app/verify?qr=${encodeURIComponent(qrData)}`;
 
     const newProduct = { name: productName, batch: batchNumber, qrData, qrURL };
 
